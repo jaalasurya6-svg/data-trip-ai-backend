@@ -1,16 +1,15 @@
-# Multi-stage build for optimal image size and security
+# Multi-stage build for optimal image size and Render 512MB RAM compatibility
 FROM maven:3.9.9-eclipse-temurin-21 AS build
 WORKDIR /app
 
-# Copy pom.xml and cache dependencies
+# Copy pom.xml and source code
 COPY pom.xml .
-RUN mvn dependency:go-offline -B || true
-
-# Copy source code and build production jar
 COPY src ./src
+
+# Package production application without running unit tests during Docker build
 RUN mvn clean package -DskipTests
 
-# Production runtime image
+# Production runtime image (lightweight Alpine JRE)
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 
@@ -23,4 +22,7 @@ COPY --from=build /app/target/day-trip-ai-backend-*.jar app.jar
 
 EXPOSE 8080
 ENV PORT=8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENV SPRING_PROFILES_ACTIVE=prod
+
+# Container-aware JVM memory configuration for Render 512MB Free Tier
+ENTRYPOINT ["java", "-XX:+UseContainerSupport", "-XX:MaxRAMPercentage=75.0", "-Xmx350m", "-jar", "app.jar"]
