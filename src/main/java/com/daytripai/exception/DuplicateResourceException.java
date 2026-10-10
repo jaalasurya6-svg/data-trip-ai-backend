@@ -1,0 +1,19 @@
+package com.daytripai.exception;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+/**
+ * Thrown when attempting to create a record that conflicts with an existing one.
+ */
+@ResponseStatus(HttpStatus.CONFLICT)
+public class DuplicateResourceException extends RuntimeException {
+
+    public DuplicateResourceException(String message) {
+        super(message);
+    }
+
+    public DuplicateResourceException(String resourceName, String fieldName, Object fieldValue) {
+        super(String.format("%s already exists with %s: '%s'", resourceName, fieldName, fieldValue));
+    }
+}
