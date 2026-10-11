@@ -14,6 +14,8 @@ import java.util.List;
 @Repository
 public interface DestinationRepository extends JpaRepository<Destination, Long> {
 
+    boolean existsByName(String name);
+
     List<Destination> findByCityIgnoreCase(String city);
 
     Page<Destination> findByCityIgnoreCase(String city, Pageable pageable);
