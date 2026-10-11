@@ -37,7 +37,7 @@ public class ExpenseController {
         return ResponseEntity.ok(ApiResponse.success("Expenses retrieved successfully", expenses));
     }
 
-    @GetMapping("/{expenseId}")
+    @GetMapping("/{expenseId:[0-9]+}")
     @Operation(summary = "Get an individual expense by ID")
     public ResponseEntity<ApiResponse<ExpenseResponse>> getExpenseById(
             @PathVariable Long tripId,
@@ -62,7 +62,7 @@ public class ExpenseController {
                 .body(ApiResponse.success("Expense logged successfully", response));
     }
 
-    @PutMapping("/{expenseId}")
+    @PutMapping("/{expenseId:[0-9]+}")
     @Operation(summary = "Update an existing expense")
     public ResponseEntity<ApiResponse<ExpenseResponse>> updateExpense(
             @PathVariable Long tripId,
@@ -75,7 +75,7 @@ public class ExpenseController {
         return ResponseEntity.ok(ApiResponse.success("Expense updated successfully", response));
     }
 
-    @DeleteMapping("/{expenseId}")
+    @DeleteMapping("/{expenseId:[0-9]+}")
     @Operation(summary = "Delete an expense and recalculate trip spending")
     public ResponseEntity<ApiResponse<Void>> deleteExpense(
             @PathVariable Long tripId,

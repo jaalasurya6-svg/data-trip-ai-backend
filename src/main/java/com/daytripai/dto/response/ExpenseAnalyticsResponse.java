@@ -123,4 +123,19 @@ public class ExpenseAnalyticsResponse {
     public void setTotalExpenseCount(int totalExpenseCount) {
         this.totalExpenseCount = totalExpenseCount;
     }
+
+    @JsonProperty("plannedBudget")
+    public Double getPlannedBudget() {
+        return totalBudget;
+    }
+
+    @JsonProperty("utilizationPercentage")
+    public Double getUtilizationPercentage() {
+        return budgetUtilizationPercentage;
+    }
+
+    @JsonProperty("categoryBreakdown")
+    public Map<ExpenseCategory, Double> getCategoryBreakdown() {
+        return categoryTotals;
+    }
 }

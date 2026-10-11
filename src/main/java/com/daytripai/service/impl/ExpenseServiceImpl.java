@@ -125,7 +125,17 @@ public class ExpenseServiceImpl implements ExpenseService {
         List<Object[]> rows = expenseRepository.getCategoryWiseBreakdownByTripId(tripId);
         int expenseCount = 0;
         for (Object[] row : rows) {
-            ExpenseCategory cat = (ExpenseCategory) row[0];
+            ExpenseCategory cat = null;
+            if (row[0] instanceof ExpenseCategory ec) {
+                cat = ec;
+            } else if (row[0] != null) {
+                try {
+                    cat = ExpenseCategory.valueOf(row[0].toString());
+                } catch (IllegalArgumentException ignored) {
+                }
+            }
+            if (cat == null) continue;
+
             Double catSum = ((Number) row[1]).doubleValue();
             categoryTotals.put(cat, Math.round(catSum * 100.0) / 100.0);
             if (actualSpent > 0) {
