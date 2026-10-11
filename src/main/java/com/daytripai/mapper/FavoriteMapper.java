@@ -11,12 +11,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class FavoriteMapper {
 
+    private final DestinationMapper destinationMapper;
+
+    public FavoriteMapper(DestinationMapper destinationMapper) {
+        this.destinationMapper = destinationMapper;
+    }
+
     public FavoriteResponse toResponse(Favorite favorite) {
         if (favorite == null) {
             return null;
         }
         Destination dest = favorite.getDestination();
-        return new FavoriteResponse(
+        FavoriteResponse response = new FavoriteResponse(
                 favorite.getId(),
                 dest != null ? dest.getId() : null,
                 dest != null ? dest.getName() : null,
@@ -28,5 +34,9 @@ public class FavoriteMapper {
                 dest != null ? dest.getImageUrl() : null,
                 favorite.getSavedAt()
         );
+        if (dest != null && destinationMapper != null) {
+            response.setDestination(destinationMapper.toResponse(dest));
+        }
+        return response;
     }
 }

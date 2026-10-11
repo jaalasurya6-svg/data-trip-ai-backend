@@ -19,6 +19,7 @@ public class FavoriteResponse {
     private Double rating;
     private String imageUrl;
     private LocalDateTime savedAt;
+    private DestinationResponse destination;
 
     public FavoriteResponse() {
     }
@@ -117,5 +118,13 @@ public class FavoriteResponse {
 
     public void setSavedAt(LocalDateTime savedAt) {
         this.savedAt = savedAt;
+    }
+
+    public DestinationResponse getDestination() {
+        return destination;
+    }
+
+    public void setDestination(DestinationResponse destination) {
+        this.destination = destination;
     }
 }
