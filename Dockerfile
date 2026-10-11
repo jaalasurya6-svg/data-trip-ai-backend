@@ -13,15 +13,10 @@ RUN mvn clean package -DskipTests
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 
-# Non-root user for security
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
-USER appuser
-
-# Copy jar from build stage
-COPY --from=build /app/target/day-trip-ai-backend-*.jar app.jar
+# Copy exact repackaged fat jar from build stage
+COPY --from=build /app/target/app.jar app.jar
 
 EXPOSE 8080
-ENV PORT=8080
 ENV SPRING_PROFILES_ACTIVE=prod
 
 # Container-aware JVM memory configuration for Render 512MB Free Tier
