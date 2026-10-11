@@ -62,6 +62,30 @@ Server starts on port **8080**.
 
 ---
 
+## ☁️ Deploying to Render
+
+This repository is pre-configured for **zero-config 1-click deployment on Render**:
+
+### Method A: Docker Web Service (Recommended)
+1. On **Render Dashboard**, click **New +** $\rightarrow$ **Web Service**.
+2. Connect your GitHub repository: `https://github.com/jaalasurya6-svg/data-trip-ai-backend`.
+3. Select **Docker** environment. Render will automatically detect the multi-stage `Dockerfile`.
+4. Click **Create Web Service**. Render builds the image and boots the service!
+
+### Method B: Native Java Service
+1. **Environment**: Java
+2. **Build Command**: `mvn clean package -DskipTests`
+3. **Start Command**: `java -XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0 -Xmx350m -jar target/app.jar`
+
+### 💡 Database Flexibility:
+- **Zero-Config Default**: Out of the box, the backend starts with an embedded in-memory **H2 database (MySQL compatibility mode)** seeded with 15 tourist spots, users, and trips. No external DB setup required!
+- **Persistent Cloud MySQL (Optional)**: If you want persistent cloud storage across container reboots, simply add these Environment Variables in your Render Service Dashboard:
+  - `SPRING_DATASOURCE_URL`: `jdbc:mysql://<your-db-host>:<port>/<db_name>?useSSL=true&allowPublicKeyRetrieval=true`
+  - `SPRING_DATASOURCE_USERNAME`: `<your_db_username>`
+  - `SPRING_DATASOURCE_PASSWORD`: `<your_db_password>`
+
+---
+
 ## 📖 API Documentation & Swagger UI
 Access the interactive OpenAPI Swagger UI at:  
 👉 **`http://localhost:8080/swagger-ui/index.html`**
